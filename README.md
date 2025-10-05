@@ -107,5 +107,5 @@ lost-n-found/
 2. **Admin login**
 <img width="1919" height="866" alt="Screenshot 2025-10-06 005525" src="https://github.com/user-attachments/assets/82180cad-0ccd-4fb2-b19a-4a83bbe6911b" />
 
-3. ** Admin dashboard**
+3. **Admin dashboard**
 <img width="1919" height="868" alt="Screenshot 2025-10-06 005540" src="https://github.com/user-attachments/assets/e1740b81-c861-4e3d-9a8f-06db707354a8" />
