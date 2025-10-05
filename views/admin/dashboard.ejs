@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - University Lost & Found</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .admin-sidebar {
+            background-color: #2c3e50;
+            min-height: 100vh;
+            padding: 0;
+        }
+        .admin-sidebar .nav-link {
+            color: #ecf0f1;
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: background-color 0.3s;
+        }
+        .admin-sidebar .nav-link:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .admin-sidebar .nav-link.active {
+            background-color: #3498db;
+        }
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        .table-responsive {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 admin-sidebar">
+                <div class="d-flex flex-column p-3 text-white">
+                    <h4 class="text-center mb-4">
+                        <i class="fas fa-search"></i><br>
+                        Admin Panel
+                    </h4>
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a href="/admin" class="nav-link active">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/" class="nav-link">
+                                <i class="fas fa-home me-2"></i>View Site
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/logout" class="nav-link">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-md-9 col-lg-10 ms-sm-auto px-4 py-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Admin Dashboard</h1>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <span class="text-muted">Welcome, Admin</span>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="row mb-4">
+                    <div class="col-md-2">
+                        <div class="stats-card">
+                            <div class="stats-number"><%= stats.total || 0 %></div>
+                            <p>Total Items</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="stats-card">
+                            <div class="stats-number"><%= stats.active || 0 %></div>
+                            <p>Active</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="stats-card">
+                            <div class="stats-number"><%= stats.resolved || 0 %></div>
+                            <p>Resolved</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="stats-card">
+                            <div class="stats-number"><%= stats.lost || 0 %></div>
+                            <p>Lost</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="stats-card">
+                            <div class="stats-number"><%= stats.found || 0 %></div>
+                            <p>Found</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="stats-card">
+                            <div class="stats-number"><%= stats.pending || 0 %></div>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Items Table -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">All Reported Items</h5>
+                    </div>
+                    <div class="card-body">
+                        <% if (items && items.length > 0) { %>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Title</th>
+                                            <th>Category</th>
+                                            <th>Location</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% items.forEach(function(item) { %>
+                                        <tr>
+                                            <td>
+                                                <span class="badge <%= item.type === 'lost' ? 'bg-danger' : 'bg-primary' %>">
+                                                    <%= item.type %>
+                                                </span>
+                                            </td>
+                                            <td><%= item.title %></td>
+                                            <td><%= item.category %></td>
+                                            <td><%= item.location %></td>
+                                            <td><%= new Date(item.date).toLocaleDateString() %></td>
+                                            <td>
+                                                <span class="badge <%= item.status === 'active' ? 'bg-primary' : item.status === 'resolved' ? 'bg-success' : 'bg-warning' %>">
+                                                    <%= item.status %>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group btn-group-sm">
+                                                    <button class="btn btn-outline-primary" onclick="updateStatus('<%= item._id %>', 'active')">
+                                                        Active
+                                                    </button>
+                                                    <button class="btn btn-outline-success" onclick="updateStatus('<%= item._id %>', 'resolved')">
+                                                        Resolved
+                                                    </button>
+                                                    <button class="btn btn-outline-danger" onclick="deleteItem('<%= item._id %>')">
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } else { %>
+                            <div class="text-center py-4">
+                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                <h4 class="text-muted">No items found</h4>
+                                <p class="text-muted">No items have been reported yet.</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        async function updateStatus(itemId, status) {
+            if (!confirm('Are you sure you want to update the status of this item?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/items/${itemId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Status updated successfully!');
+                    location.reload();
+                } else {
+                    alert('Error updating status: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error updating status');
+            }
+        }
+
+        async function deleteItem(itemId) {
+            if (!confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/admin/items/${itemId}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Item deleted successfully!');
+                    location.reload();
+                } else {
+                    alert('Error deleting item: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error deleting item');
+            }
+        }
+
+        // Auto refresh every 30 seconds to get latest data
+        setInterval(() => {
+            // You could implement a more efficient refresh here
+            // For now, we'll just reload if there are changes needed
+        }, 30000);
+    </script>
+</body>
+</html>
