@@ -45,7 +45,7 @@ cd lost-n-found
 ```bash
 npm install
 ```
-### 3. Create a `.env` File
+3. Create a `.env` File
 
 Create a `.env` file in the root directory of your project and add the following environment variables:
 
