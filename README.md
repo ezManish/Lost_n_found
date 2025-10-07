@@ -45,25 +45,7 @@ cd lost-n-found
 ```bash
 npm install
 ```
-3. Create a `.env` File
-
-Create a `.env` file in the root directory of your project and add the following environment variables:
-
-```bash
-# Server port
-PORT=3000
-
-# MongoDB connection string
-MONGODB_URI=mongodb://localhost:27017/university-lost-found
-
-# Secret key for session signing (change to a strong, random value in production)
-SESSION_SECRET=your-super-secret-session-key-here-change-this-in-production
-
-# Default admin credentials (change in production)
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin123
-```
-4. **Start the Application**
+3. **Start the Application**
 For Development:
 ```bash
 npm run dev
@@ -74,7 +56,7 @@ For Production:
 ```bash
 npm start
 ```
-5.  **Access the Application**
+4.  **Access the Application**
 Once the server is running, access the application at:
 
 Main Application: http://localhost:3000
